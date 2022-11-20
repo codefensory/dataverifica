@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+/migrations
 
 # testing
 /coverage
@@ -20,6 +21,7 @@
 *.pem
 
 pnpm-lock.yaml
+yarn.lock
 
 # debug
 npm-debug.log*
