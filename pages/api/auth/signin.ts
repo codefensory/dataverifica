@@ -25,8 +25,6 @@ async function signinHandler(req: NextApiRequest, res: NextApiResponse) {
     passwordHash,
   });
 
-  console.log(userValidForCredentials);
-
   if (!userValidForCredentials) {
     return res.status(403).json({
       error: "username or passowrd invalid",
