@@ -7,13 +7,48 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model UserInfo {
-  id               Int     @id @default(autoincrement())
-  name             String
-  lastname         String
-  phone            String
-  direction        String
-  extraInformation String?
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String
+  password    String
+  ruc         String
+  companyName String
+  phone       String?
+  createdAt   DateTime  @default(now())
+  deleteAt    DateTime?
+  Request     Request[]
+}
+
+model Request {
+  id                 Int                @id @default(autoincrement())
+  personType         PersonType
+  documentType       PersonDocumentType
+  documentNumber     String
+  name               String
+  requestInformation String
+  PDF                PDF?               @relation(fields: [pdfId], references: [id])
+  User               User               @relation(fields: [userId], references: [id])
+  createdAt          DateTime           @default(now())
+  userId             Int
+  pdfId              Int?
+}
+
+model PDF {
+  id        Int       @id @default(autoincrement())
+  path      String
+  createdAt DateTime  @default(now())
+  deleteAt  DateTime?
+  Request   Request[]
+}
+
+enum PersonType {
+  Natural
+  Juridical
+}
+
+enum PersonDocumentType {
+  DNI
+  RUC
 }
 
 model Admin {
