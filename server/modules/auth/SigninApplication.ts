@@ -1,4 +1,4 @@
-import { Admin } from "@prisma/client";
+import { User } from "@prisma/client";
 import { prisma } from "../shared/db";
 import { verifyHash } from "./utils";
 
@@ -8,13 +8,13 @@ export type SigninApplicationDTO = {
 };
 
 export type SigninApplicationReturn = {
-  user: Admin | null;
+  user: User | null;
   isValid: boolean;
 };
 
 export class SigninApplication {
-  async execute(dto: SigninApplicationDTO): Promise<Admin | null | undefined> {
-    const user = await prisma.admin.findFirst({
+  async execute(dto: SigninApplicationDTO): Promise<User | null | undefined> {
+    const user = await prisma.user.findFirst({
       where: { username: dto.username },
     });
 

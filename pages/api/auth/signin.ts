@@ -33,6 +33,7 @@ async function signinHandler(req: NextApiRequest, res: NextApiResponse) {
 
   req.session.user = {
     id: userValidForCredentials.id,
+    isAdmin: userValidForCredentials.isAdmin,
   };
 
   await req.session.save();

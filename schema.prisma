@@ -8,18 +8,19 @@ generator client {
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
-  email       String
-  password    String
-  ruc         String
-  companyName String
-  phone       String?
-  createdAt   DateTime  @default(now())
-  deleteAt    DateTime?
-  Request     Request[]
+  id               Int                @id @default(autoincrement())
+  username         String
+  password         String
+  ruc              String?
+  companyName      String?
+  phone            String?
+  createdAt        DateTime           @default(now())
+  deleteAt         DateTime?
+  isAdmin          Boolean            @default(false)
+  InformationOrder InformationOrder[]
 }
 
-model Request {
+model InformationOrder {
   id                 Int                @id @default(autoincrement())
   personType         PersonType
   documentType       PersonDocumentType
@@ -34,11 +35,11 @@ model Request {
 }
 
 model PDF {
-  id        Int       @id @default(autoincrement())
-  path      String
-  createdAt DateTime  @default(now())
-  deleteAt  DateTime?
-  Request   Request[]
+  id               Int                @id @default(autoincrement())
+  path             String
+  createdAt        DateTime           @default(now())
+  deleteAt         DateTime?
+  InformationOrder InformationOrder[]
 }
 
 enum PersonType {
@@ -49,10 +50,4 @@ enum PersonType {
 enum PersonDocumentType {
   DNI
   RUC
-}
-
-model Admin {
-  id       Int    @id @default(autoincrement())
-  username String
-  password String
 }
