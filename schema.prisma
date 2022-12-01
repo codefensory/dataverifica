@@ -27,6 +27,7 @@ model InformationOrder {
   documentNumber     String
   name               String
   requestInformation String
+  isComplete         Boolean            @default(false)
   PDF                PDF?               @relation(fields: [pdfId], references: [id])
   User               User               @relation(fields: [userId], references: [id])
   createdAt          DateTime           @default(now())

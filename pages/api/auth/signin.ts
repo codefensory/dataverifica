@@ -1,11 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { withIronSessionApiRoute } from "iron-session/next";
 import { authSessionOption } from "@server/lib";
 import { SigninApplication } from "@server/modules/auth";
+import { createRouter } from "next-connect";
+import { ironMiddleware } from "@server/middlewares";
+import { defaultRouterHandler } from "@server/utils/defaultRouterHandler";
 
-export default withIronSessionApiRoute(signinHandler, authSessionOption);
+const router = createRouter<NextApiRequest, NextApiResponse>();
 
-async function signinHandler(req: NextApiRequest, res: NextApiResponse) {
+router.use(ironMiddleware(authSessionOption));
+
+router.post(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
@@ -38,5 +42,7 @@ async function signinHandler(req: NextApiRequest, res: NextApiResponse) {
 
   await req.session.save();
 
-  res.status(200).json({ ok: true });
-}
+  res.status(200).end();
+});
+
+export default router.handler(defaultRouterHandler);

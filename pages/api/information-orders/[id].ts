@@ -1,28 +1,14 @@
 import { authSessionOption } from "@server/lib";
+import { ironMiddleware } from "@server/middlewares";
 import { prisma } from "@server/modules/shared/db";
-import { withIronSessionApiRoute } from "iron-session/next";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { createRouter } from "next-connect";
 
-export default withIronSessionApiRoute(
-  informationOrderHandler,
-  authSessionOption
-);
+const router = createRouter<NextApiRequest, NextApiResponse>();
 
-async function informationOrderHandler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  switch (req.method) {
-    case "POST":
-      return update(req, res);
-    case "GET":
-      return get(req, res);
-    default:
-      return res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
-}
+router.use(ironMiddleware(authSessionOption));
 
-async function update(req: NextApiRequest, res: NextApiResponse) {
+router.post(async (req: NextApiRequest, res: NextApiResponse) => {
   const user = req.session.user;
 
   if (!user || !user.isAdmin) {
@@ -53,9 +39,9 @@ async function update(req: NextApiRequest, res: NextApiResponse) {
   } catch (error: any) {
     throw res.status(500).json({ error: error.message });
   }
-}
+});
 
-async function get(req: NextApiRequest, res: NextApiResponse) {
+router.get(async (req: NextApiRequest, res: NextApiResponse) => {
   const user = req.session.user;
 
   if (!user) {
@@ -92,4 +78,4 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
   } catch (error: any) {
     throw res.status(500).json({ error: error.message });
   }
-}
+});
