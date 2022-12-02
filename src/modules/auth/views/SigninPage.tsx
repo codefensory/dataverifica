@@ -11,30 +11,38 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { sha256 } from "crypto-hash";
-import { FC, useState } from "react";
+import { FC, FormEvent, useState } from "react";
 import { toast } from "react-toastify";
+import { useUser } from "../hooks";
 
 export const SigninPage: FC = () => {
+  const { user, mutateUser } = useUser("/");
+
   const [username, setUsername] = useState("");
 
   const [password, setPassword] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
     setIsLoading(true);
 
     try {
       const passwordHash = await sha256(password);
 
-      const response = await axios.post("/api/auth/signin", {
-        username,
-        password: passwordHash,
-      });
-
-      toast.success("Login correcto");
+      mutateUser(
+        await axios.post("/api/auth/signin", {
+          username,
+          password: passwordHash,
+        })
+      );
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
+
+      setPassword("");
+
       toast.error(
         error?.response?.data?.error ?? "Hubo un error al iniciar sesion"
       );
@@ -42,6 +50,10 @@ export const SigninPage: FC = () => {
 
     setIsLoading(false);
   };
+
+  if (!user || user?.data.isLoggedIn) {
+    return null;
+  }
 
   return (
     <Stack w="100vw" h="100vh" bg="primary.200">
@@ -61,32 +73,34 @@ export const SigninPage: FC = () => {
           <Text color="gray.500">Ingresa tus credenciales para acceder</Text>
         </VStack>
         <Divider my="4" />
-        <VStack spacing="4">
-          <FormControl>
-            <Input
-              type="text"
-              placeholder="Nombre de usuario"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <Input
-              type="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </FormControl>
-          <Button
-            disabled={!!!username || !!!password}
-            isLoading={isLoading}
-            w="full"
-            onClick={onSubmit}
-          >
-            Iniciar sesión
-          </Button>
-        </VStack>
+        <form onSubmit={onSubmit}>
+          <VStack spacing="4">
+            <FormControl>
+              <Input
+                type="text"
+                placeholder="Nombre de usuario"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <Input
+                type="password"
+                placeholder="Contraseña"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </FormControl>
+            <Button
+              disabled={!!!username || !!!password}
+              isLoading={isLoading}
+              w="full"
+              type="submit"
+            >
+              Iniciar sesión
+            </Button>
+          </VStack>
+        </form>
       </Box>
     </Stack>
   );
