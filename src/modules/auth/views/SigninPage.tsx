@@ -13,10 +13,14 @@ import axios from "axios";
 import { sha256 } from "crypto-hash";
 import { FC, FormEvent, useState } from "react";
 import { toast } from "react-toastify";
-import { useUser } from "../hooks";
+import { useRedirectByUser } from "../hooks";
 
 export const SigninPage: FC = () => {
-  const { user, mutateUser } = useUser("/");
+  const {
+    user,
+    userRefetch,
+    isLoading: userIsLoading,
+  } = useRedirectByUser("/");
 
   const [username, setUsername] = useState("");
 
@@ -32,12 +36,12 @@ export const SigninPage: FC = () => {
     try {
       const passwordHash = await sha256(password);
 
-      mutateUser(
-        await axios.post("/api/auth/signin", {
-          username,
-          password: passwordHash,
-        })
-      );
+      await axios.post("/api/auth/signin", {
+        username,
+        password: passwordHash,
+      });
+
+      userRefetch();
     } catch (error: any) {
       console.error(error);
 
@@ -51,7 +55,7 @@ export const SigninPage: FC = () => {
     setIsLoading(false);
   };
 
-  if (!user || user?.data.isLoggedIn) {
+  if (userIsLoading || !user || user.isLoggedIn) {
     return null;
   }
 
@@ -62,7 +66,7 @@ export const SigninPage: FC = () => {
         m="auto"
         w="30rem"
         bg="white"
-        borderRadius="8"
+        borderRadius="12"
         p="6"
         shadow="lg"
       >

@@ -13,18 +13,20 @@ router.get(async (req, res) => {
   const user = req.session.user;
 
   if (!user) {
-    return res.status(200).json({
+    res.status(200).json({
       user: null,
       isLoggedIn: false,
     });
+    return;
   }
 
   const userResponse = await prisma.user.findFirst({ where: { id: user.id } });
 
   if (!userResponse) {
-    return res.status(400).json({
+    res.status(400).json({
       error: "User not found",
     });
+    return;
   }
 
   res.status(200).json({
