@@ -4,21 +4,28 @@ import { ChakraProvider } from "@chakra-ui/react";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import theme from "@app/modules/theme";
-import { SWRConfig } from "swr";
-import axios from "axios";
+import { Provider } from "jotai";
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { queryClientAtom } from "jotai-tanstack-query";
+import { useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(() => new QueryClient());
+
   return (
-    <SWRConfig
-      value={{
-        fetcher: axios.get,
-        onError: (error) => console.error(error),
-      }}
-    >
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-        <ToastContainer position="top-center" />
-      </ChakraProvider>
-    </SWRConfig>
+    <ChakraProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <Provider initialValues={[[queryClientAtom, queryClient]] as const}>
+            <Component {...pageProps} />
+            <ToastContainer position="top-center" />
+          </Provider>
+        </Hydrate>
+      </QueryClientProvider>
+    </ChakraProvider>
   );
 }
