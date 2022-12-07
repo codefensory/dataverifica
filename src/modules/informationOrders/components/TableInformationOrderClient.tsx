@@ -7,6 +7,8 @@ import {
   Tbody,
   Td,
   Table,
+  Text,
+  TableCaption,
 } from "@chakra-ui/react";
 import { InformationOrder } from "@prisma/client";
 
@@ -20,6 +22,9 @@ export const TableInformationOrderClient: FC<
   return (
     <TableContainer>
       <Table variant="simple">
+        {informationOrders.length === 0 && (
+          <TableCaption>Aun no hay peticiones</TableCaption>
+        )}
         <Thead>
           <Tr>
             <Th pl="0" color="gray.500">
@@ -48,7 +53,7 @@ export const TableInformationOrderClient: FC<
                 <Td fontWeight="bold">{info.documentType}</Td>
                 <Td>{info.documentNumber}</Td>
                 <Td>{info.name}</Td>
-                <Td>{info.isComplete ? "Completado" : "Pendiente"}</Td>
+                <Td fontWeight="bold" color={info.isComplete ? "green" : "yellow.600"}>{info.isComplete ? "Completado" : "Pendiente"}</Td>
                 <Td
                   pr="0"
                   color={info.isComplete ? undefined : "gray.200"}

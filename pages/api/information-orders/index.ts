@@ -35,11 +35,12 @@ router.get(async (req: NextApiRequest, res: NextApiResponse) => {
 
     orders = await prisma.informationOrder.findMany({
       where: { userId: userId },
+      orderBy: { id: "desc" },
     });
 
     return res.status(200).json(orders);
   } catch (error: any) {
-    throw res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -63,7 +64,7 @@ router.post(async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).json({ ...order });
   } catch (error: any) {
-    throw res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
