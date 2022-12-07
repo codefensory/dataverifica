@@ -1,3 +1,4 @@
+import { axios } from "@app/modules/shared";
 import {
   Button,
   Checkbox,
@@ -18,8 +19,12 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FC } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
+import { FC, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { createInformationOrders } from "../services";
+import { informationsOrderKeys } from "../utils";
 
 type ModalCreateInfoOrderProps = {
   onClose: () => void;
@@ -27,16 +32,34 @@ type ModalCreateInfoOrderProps = {
 };
 
 export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     mode: "onBlur",
   });
 
-  const onSubmit = (data: FieldValues) => console.log(data);
+  const queryClient = useQueryClient();
+
+  const [isCreating, setIsCreating] = useState(false);
+
+  const onSubmit = async (data: FieldValues) => {
+    setIsCreating(true);
+
+    try {
+      const value = await createInformationOrders(data);
+
+      await queryClient.invalidateQueries(informationsOrderKeys.MAIN);
+
+      setIsCreating(false);
+
+      console.log(value);
+
+      props.onClose();
+
+      toast.success("Petición creada!!");
+    } catch (error) {
+      toast.error("Hubo un error al crear la petición");
+      throw error;
+    }
+  };
 
   const handleClose = () => {
     reset();
@@ -54,7 +77,7 @@ export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
       <ModalOverlay />
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <ModalContent minW="40rem">
-          <ModalHeader color="text.dark">Agregar peticion</ModalHeader>
+          <ModalHeader color="text.dark">Agregar petición</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <VStack w="full" spacing="6">
@@ -70,6 +93,7 @@ export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
                   <FormLabel>Nombre</FormLabel>
                   <Input
                     {...register("name")}
+                    required
                     placeholder="First Name Last Name"
                   />
                 </FormControl>
@@ -86,19 +110,22 @@ export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
                   <FormLabel>Numero de documento</FormLabel>
                   <Input
                     {...register("documentNumber")}
+                    required
                     type="number"
                     placeholder="12345678"
                   />
                 </FormControl>
+
+                <Input hidden {...register("requestInformation")} />
               </HStack>
               <Text w="full" fontSize="lg" color="text.dark">
-                Informacion a solicitar
+                Información a solicitar
               </Text>
               <CheckboxGroup>
                 <VStack w="full" divider={<Divider />}>
                   <HStack w="full" spacing="8">
                     <HStack w="full" justifyContent="space-between">
-                      <Text>Curriculum</Text>
+                      <Text>Documento</Text>
                       <Checkbox />
                     </HStack>
                     <HStack w="full" justifyContent="space-between">
@@ -124,7 +151,9 @@ export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
             <Button mr="1rem" colorScheme="gray" onClick={handleClose}>
               Cancelar
             </Button>
-            <Button type="submit">Crear</Button>
+            <Button isLoading={isCreating} type="submit">
+              Crear
+            </Button>
           </ModalFooter>
         </ModalContent>
       </form>
