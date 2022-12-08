@@ -1,13 +1,12 @@
-import { Box, Heading, Stack } from "@chakra-ui/react";
 import { withIronSessionSsr } from "iron-session/next";
 import { authSessionOption } from "@server/lib";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { simpleUserAtom } from "@app/modules/shared/atoms";
 import {
-  InformationOrderAdmin,
-  InformationOrderClient,
+  InformationOrder,
 } from "@app/modules/informationOrders/views";
+import { MainLayout } from "@app/modules/shared/layouts";
 
 export default function Home(props: any) {
   const user = useAtomValue(simpleUserAtom);
@@ -17,20 +16,9 @@ export default function Home(props: any) {
   }
 
   return (
-    <Stack w="100vw" h="100vh" bg="primary.200">
-      <Box
-        alignItems="start-flex"
-        m="auto"
-        bg="white"
-        borderRadius="12"
-        p="6"
-        shadow="lg"
-        w="90%"
-        overflow="hidden"
-      >
-        {user.isAdmin ? <InformationOrderAdmin /> : <InformationOrderClient />}
-      </Box>
-    </Stack>
+    <MainLayout>
+      <InformationOrder />
+    </MainLayout>
   );
 }
 

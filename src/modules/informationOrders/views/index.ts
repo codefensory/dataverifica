@@ -1,2 +1,1 @@
-export * from "./InformationOrderClient";
-export * from "./InformationOrderAdmin";
+export * from "./InformationOrder";

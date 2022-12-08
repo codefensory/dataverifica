@@ -1,3 +1,2 @@
-export * from "./TableInformationOrderClient";
-export * from "./TableInformationOrderAdmin";
+export * from "./TableInformationOrder";
 export * from "./ModalCreateInfoOrder";

@@ -11,7 +11,7 @@ export const SimpleContainerView: FC<
   PropsWithChildren<SimpleContianerViewProps>
 > = (props) => {
   return (
-    <VStack w="full" h="80vh">
+    <VStack w="full" h="full">
       <HStack justifyContent="space-between" w="full">
         <VStack alignItems="flex-start">
           <Heading as="h2" size="md" color="text.dark">

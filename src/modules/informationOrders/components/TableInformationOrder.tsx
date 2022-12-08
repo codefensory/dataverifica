@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { InformationOrder } from "@prisma/client";
 
-type TableInformationOrderAdminProps = {
+type TableInformationOrderProps = {
   informationOrders?: InformationOrder[];
   isAdmin?: boolean;
 };
@@ -142,8 +142,8 @@ const AdminBody = (props: { informationOrders: InformationOrder[] }) => {
   );
 };
 
-export const TableInformationOrderAdmin: FC<
-  TableInformationOrderAdminProps
+export const TableInformationOrder: FC<
+  TableInformationOrderProps
 > = ({ informationOrders = [], isAdmin }) => {
   return (
     <TableContainer h="full" overflowY="auto" w="full">
