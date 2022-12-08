@@ -4,20 +4,16 @@ import { authSessionOption } from "@server/lib";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { simpleUserAtom } from "@app/modules/shared/atoms";
-import { InformationOrderClient } from "@app/modules/informationOrders/views";
-import { informationsOrderKeys } from "@app/modules/informationOrders/utils";
-import { getInformationOrders } from "@app/modules/informationOrders/services";
-import { Suspense } from "react";
+import {
+  InformationOrderAdmin,
+  InformationOrderClient,
+} from "@app/modules/informationOrders/views";
 
 export default function Home(props: any) {
   const user = useAtomValue(simpleUserAtom);
 
   if (!user) {
     return null;
-  }
-
-  if (user?.isAdmin) {
-    return <Heading>Welcome Admin</Heading>;
   }
 
   return (
@@ -29,8 +25,10 @@ export default function Home(props: any) {
         borderRadius="12"
         p="6"
         shadow="lg"
+        w="90%"
+        overflow="hidden"
       >
-        <InformationOrderClient />
+        {user.isAdmin ? <InformationOrderAdmin /> : <InformationOrderClient />}
       </Box>
     </Stack>
   );
@@ -50,10 +48,6 @@ export const getServerSideProps = withIronSessionSsr<any>(
     }
 
     queryClient.setQueryData(["user"], { user: user, isLoggedIn: true });
-
-    await queryClient.prefetchQuery(informationsOrderKeys.MAIN, () =>
-      getInformationOrders(req.headers.cookie)
-    );
 
     return {
       props: {

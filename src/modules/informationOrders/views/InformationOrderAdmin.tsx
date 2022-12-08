@@ -1,5 +1,6 @@
+import { userIsAdminAtom } from "@app/modules/shared/atoms";
 import { SimpleContainerView } from "@app/modules/shared/components";
-import { Box, Button, IconButton } from "@chakra-ui/react";
+import { Box, Button, IconButton, VStack } from "@chakra-ui/react";
 import { useAtomValue } from "jotai";
 import Image from "next/image";
 import { FC, useState } from "react";
@@ -9,7 +10,9 @@ import {
   TableInformationOrderAdmin,
 } from "../components";
 
-export const InformationOrderClient: FC = () => {
+export const InformationOrderAdmin: FC = () => {
+  const isAdmin = useAtomValue(userIsAdminAtom);
+
   const {
     data: informationOrders,
     isFetching,
@@ -21,6 +24,7 @@ export const InformationOrderClient: FC = () => {
   return (
     <SimpleContainerView
       title="Peticiones"
+      subTitle="Lista de todas las peticiones que has solicitado"
       rightRenderHeader={
         <>
           <IconButton
@@ -40,9 +44,15 @@ export const InformationOrderClient: FC = () => {
         </>
       }
     >
-      <Box mt="1rem">
-        <TableInformationOrderAdmin informationOrders={informationOrders} />
-      </Box>
+      <VStack mt="1rem" h="full" w="full">
+        <Box flex="1" h="0" w="full">
+          <TableInformationOrderAdmin
+            isAdmin={isAdmin}
+            informationOrders={informationOrders}
+          />
+        </Box>
+        <Box w="full" h="3rem"></Box>
+      </VStack>
       <ModalCreateInfoOrder
         onClose={() => setCreateModalOpen(false)}
         isOpen={createModalOpen}

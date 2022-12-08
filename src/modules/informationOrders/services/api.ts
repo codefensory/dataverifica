@@ -1,9 +1,9 @@
 import { axios } from "@app/modules/shared";
 import { InformationOrder } from "@prisma/client";
 
-export const getInformationOrders = (cookie?: string) =>
+export const getInformationOrders = () =>
   axios
-    .get<InformationOrder[]>("/api/information-orders", { headers: { cookie } })
+    .get<InformationOrder[]>("/api/information-orders")
     .then((data) => data.data);
 
 export const createInformationOrders = (data: any) =>

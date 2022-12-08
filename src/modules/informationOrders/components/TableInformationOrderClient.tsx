@@ -7,7 +7,6 @@ import {
   Tbody,
   Td,
   Table,
-  Text,
   TableCaption,
 } from "@chakra-ui/react";
 import { InformationOrder } from "@prisma/client";
