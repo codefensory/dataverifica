@@ -1,10 +1,28 @@
 import { axios } from "@app/modules/shared";
-import { InformationOrder } from "@prisma/client";
+import { InformationOrderResponse } from "../domain";
 
-export const getInformationOrders = () =>
+export const getInformationOrders = (page: number) =>
   axios
-    .get<InformationOrder[]>("/api/information-orders")
+    .get<InformationOrderResponse>("/api/information-orders?page=" + page)
     .then((data) => data.data);
 
-export const createInformationOrders = (data: any) =>
-  axios.post("/api/information-orders", data).then((data) => data.data);
+export const createInformationOrders = (requestData: any) =>
+  axios.post("/api/information-orders", requestData).then((data) => data.data);
+
+export const completeInformationOrder = (requestData: any) =>
+  axios
+    .post("/api/information-orders/process", requestData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((data) => data.data);
+
+export const saveInformationOrder = (requestData: any) =>
+  axios
+    .post("/api/information-orders/save", requestData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((data) => data.data);

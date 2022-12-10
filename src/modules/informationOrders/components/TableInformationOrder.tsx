@@ -10,12 +10,8 @@ import {
   TableCaption,
   Button,
 } from "@chakra-ui/react";
-import { InformationOrder } from "@prisma/client";
-
-type TableInformationOrderProps = {
-  informationOrders?: InformationOrder[];
-  isAdmin?: boolean;
-};
+import { InformationOrderData } from "../domain";
+import { PDF } from "@prisma/client";
 
 const UserHeader = () => (
   <>
@@ -32,7 +28,10 @@ const UserHeader = () => (
   </>
 );
 
-const UserBody = (props: { informationOrders: InformationOrder[] }) => {
+const UserBody = (props: {
+  informationOrders: InformationOrderData[];
+  onOpenPdf?: (pdf: PDF | undefined) => void;
+}) => {
   const { informationOrders } = props;
 
   return (
@@ -58,11 +57,12 @@ const UserBody = (props: { informationOrders: InformationOrder[] }) => {
             </Td>
             <Td
               pr="0"
-              color={info.isComplete ? undefined : "gray.200"}
-              cursor={info.isComplete ? "pointer" : "default"}
               textDecor="underline"
+              color={!!info.PDF ? undefined : "gray.200"}
+              cursor={!!info.PDF ? "pointer" : "default"}
+              onClick={() => props.onOpenPdf?.(info.PDF)}
             >
-              Descargar
+              Ver PDF
             </Td>
           </Tr>
         );
@@ -73,9 +73,6 @@ const UserBody = (props: { informationOrders: InformationOrder[] }) => {
 
 const AdminHeader = () => (
   <>
-    <Th pl="0" color="gray.500">
-      User ID
-    </Th>
     <Th pl="0" color="gray.500">
       T. Persona
     </Th>
@@ -92,7 +89,11 @@ const AdminHeader = () => (
   </>
 );
 
-const AdminBody = (props: { informationOrders: InformationOrder[] }) => {
+const AdminBody = (props: {
+  informationOrders: InformationOrderData[];
+  onClick?: (index: number) => void;
+  onOpenPdf?: (pdf: PDF | undefined) => void;
+}) => {
   const { informationOrders } = props;
 
   return (
@@ -104,7 +105,6 @@ const AdminBody = (props: { informationOrders: InformationOrder[] }) => {
             fontSize="sm"
             color="text.dark"
           >
-            <Td pl="0">{info.id}</Td>
             <Td pl="0" fontWeight="bold">
               {info.personType}
             </Td>
@@ -119,11 +119,12 @@ const AdminBody = (props: { informationOrders: InformationOrder[] }) => {
             </Td>
             <Td
               pr="0"
-              color={info.isComplete ? undefined : "gray.200"}
-              cursor={info.isComplete ? "pointer" : "default"}
+              color={!!info.PDF ? undefined : "gray.200"}
+              cursor={!!info.PDF ? "pointer" : "default"}
               textDecor="underline"
+              onClick={() => props.onOpenPdf?.(info.PDF)}
             >
-              Descargar
+              Ver PDF
             </Td>
             <Td>
               <Button
@@ -131,6 +132,7 @@ const AdminBody = (props: { informationOrders: InformationOrder[] }) => {
                 colorScheme={info.isComplete ? "gray" : "primary"}
                 left="50%"
                 transform="translateX(-50%)"
+                onClick={() => props.onClick?.(index)}
               >
                 {info.isComplete ? "Editar" : "Completar"}
               </Button>
@@ -142,23 +144,54 @@ const AdminBody = (props: { informationOrders: InformationOrder[] }) => {
   );
 };
 
-export const TableInformationOrder: FC<
-  TableInformationOrderProps
-> = ({ informationOrders = [], isAdmin }) => {
+type TableInformationOrderProps = {
+  informationOrders?: InformationOrderData[];
+  isAdmin?: boolean;
+  isLoading?: boolean;
+  onClickEdit?: (index: number) => void;
+};
+
+export const TableInformationOrder: FC<TableInformationOrderProps> = ({
+  informationOrders = [],
+  isAdmin,
+  isLoading,
+  onClickEdit,
+}) => {
+  const handlerOpenPDF = (pdf?: PDF) => {
+    if (!pdf) {
+      return;
+    }
+
+    window.open(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/${pdf.path?.replace(
+        "public/",
+        ""
+      )}`
+    );
+  };
+
   return (
     <TableContainer h="full" overflowY="auto" w="full">
       <Table variant="simple">
-        {informationOrders.length === 0 && (
-          <TableCaption>Aun no hay peticiones</TableCaption>
-        )}
+        <TableCaption hidden={isLoading || informationOrders.length > 0}>
+          Aun no hay peticiones
+        </TableCaption>
+        <TableCaption hidden={!isLoading}>Cargando...</TableCaption>
         <Thead position="sticky" top="0" bg="white" zIndex="1">
           <Tr>{isAdmin ? <AdminHeader /> : <UserHeader />}</Tr>
         </Thead>
         <Tbody>
           {isAdmin ? (
-            <AdminBody informationOrders={informationOrders} />
+            <AdminBody
+              informationOrders={informationOrders}
+              onClick={onClickEdit}
+              onOpenPdf={handlerOpenPDF}
+            />
           ) : (
-            <UserBody informationOrders={informationOrders} />
+            <UserBody
+              informationOrders={informationOrders}
+              onOpenPdf={handlerOpenPDF}
+            />
           )}
         </Tbody>
       </Table>

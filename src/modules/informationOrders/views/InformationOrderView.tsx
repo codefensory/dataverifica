@@ -1,22 +1,42 @@
 import { userIsAdminAtom } from "@app/modules/shared/atoms";
-import { SimpleContainerView } from "@app/modules/shared/components";
+import { SimpleContainerView, Pagination } from "@app/modules/shared/components";
 import { Box, Button, Divider, IconButton, VStack } from "@chakra-ui/react";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import Image from "next/image";
 import { FC, useState } from "react";
-import { informationOrderDefaultDataAtom } from "../atoms";
-import { ModalCreateInfoOrder, TableInformationOrder } from "../components";
+import { informationOrderDataAtom, informationOrderPageAtom } from "../atoms";
+import {
+  ModalCompleteInfoOrder,
+  ModalCreateInfoOrder,
+  TableInformationOrder,
+} from "../components";
 
-export const InformationOrder: FC = () => {
+export const InformationOrderView: FC = () => {
   const isAdmin = useAtomValue(userIsAdminAtom);
 
+  const [page, setPage] = useAtom(informationOrderPageAtom);
+
   const {
-    data: informationOrders,
+    data: informationOrdersPages,
+    isLoading,
     isFetching,
     refetch,
-  } = useAtomValue(informationOrderDefaultDataAtom);
+  } = useAtomValue(informationOrderDataAtom);
+
+  const informationOrders = informationOrdersPages?.pages[0]?.orders;
+
+  const totalPages = informationOrdersPages?.pages[0]?.pages;
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
+
+  const [completeModalOpen, setCompleteModalOpen] = useState(false);
+
+  const [infoOrderIndex, setInfoOrderIndex] = useState(0);
+
+  const handlerEditClick = (index: number) => {
+    setInfoOrderIndex(index);
+    setCompleteModalOpen(true);
+  };
 
   return (
     <SimpleContainerView
@@ -53,13 +73,27 @@ export const InformationOrder: FC = () => {
         <Box flex="1" h="0" w="full">
           <TableInformationOrder
             isAdmin={isAdmin}
+            isLoading={isLoading}
             informationOrders={informationOrders}
+            onClickEdit={handlerEditClick}
           />
         </Box>
         <Divider />
-        <Box w="full" h="3rem"></Box>
+        <Box w="full" h="4rem">
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages ?? 0}
+            onChange={setPage}
+          />
+        </Box>
       </VStack>
-      {!isAdmin && (
+      {isAdmin ? (
+        <ModalCompleteInfoOrder
+          informationOrders={informationOrders?.[infoOrderIndex]}
+          onClose={() => setCompleteModalOpen(false)}
+          isOpen={completeModalOpen}
+        />
+      ) : (
         <ModalCreateInfoOrder
           onClose={() => setCreateModalOpen(false)}
           isOpen={createModalOpen}

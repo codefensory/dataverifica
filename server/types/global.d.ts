@@ -2,6 +2,10 @@ import type { NextApiRequest } from "next";
 
 declare module "next" {
   interface NextApiRequest extends NextApiRequest {
-    file?: string;
+    file?: {
+      originalname: string;
+      path: string;
+    };
+    originalName: string;
   }
 }
