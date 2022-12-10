@@ -1,1 +1,1 @@
-export * from "./InformationOrderClient";
+export * from "./InformationOrderView";

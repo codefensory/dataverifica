@@ -1,6 +1,7 @@
 import { authSessionOption } from "@server/lib";
 import { ironMiddleware } from "@server/middlewares";
 import { prisma } from "@server/modules/shared/db";
+import { defaultRouterHandler } from "@server/utils/defaultRouterHandler";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 
@@ -79,3 +80,5 @@ router.get(async (req: NextApiRequest, res: NextApiResponse) => {
     throw res.status(500).json({ error: error.message });
   }
 });
+
+export default router.handler(defaultRouterHandler);

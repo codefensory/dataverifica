@@ -58,7 +58,6 @@ router.post(async (req, res) => {
   const informationOrderUpdated = await prisma.informationOrder.update({
     data: {
       pdfId: pdf?.id,
-      isComplete: true,
     },
     where: {
       id: parseInt(informationOrderId),

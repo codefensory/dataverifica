@@ -5,3 +5,7 @@ import { atom } from "jotai";
 export const simpleUserAtom = atom<SimpleUser | undefined | null>((get) => {
   return get(userInfoAtom).data?.user;
 });
+
+export const userIsAdminAtom = atom(
+  (get) => get(userInfoAtom).data?.user?.isAdmin
+);

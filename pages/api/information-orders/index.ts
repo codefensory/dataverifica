@@ -23,22 +23,49 @@ router.get(async (req: NextApiRequest, res: NextApiResponse) => {
 
     let userId: number | undefined;
 
+    let page = 0;
+
     if (user.isAdmin) {
-      const { userId: userIdString } = req.query;
+      const { userId: userIdString, page: pageString } = req.query;
 
       if (typeof userIdString === "string") {
         userId = parseInt(userIdString);
+      }
+
+      if (typeof pageString === "string") {
+        page = parseInt(pageString);
       }
     } else {
       userId = user.id;
     }
 
+    const itemsByPage = 10;
+
     orders = await prisma.informationOrder.findMany({
       where: { userId: userId },
+      include: {
+        User: {
+          select: {
+            ruc: true,
+            companyName: true,
+            phone: true,
+            email: true,
+          },
+        },
+        PDF: true,
+      },
+      skip: itemsByPage * page,
+      take: itemsByPage,
       orderBy: { id: "desc" },
     });
 
-    return res.status(200).json(orders);
+    const totalItems = await prisma.informationOrder.count({
+      where: { userId: userId },
+    });
+
+    return res
+      .status(200)
+      .json({ orders: orders, pages: Math.ceil(totalItems / itemsByPage) });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

@@ -1,2 +1,4 @@
-export * from "./TableInformationOrderClient"
-export * from "./ModalCreateInfoOrder"
+export * from "./TableInformationOrder";
+export * from "./ModalCreateInfoOrder";
+export * from "./ModalCompleteInfoOrder";
+export * from "./ChooseFileInput"

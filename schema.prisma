@@ -14,6 +14,7 @@ model User {
   ruc              String?
   companyName      String?
   phone            String?
+  email            String?
   createdAt        DateTime           @default(now())
   deleteAt         DateTime?
   isAdmin          Boolean            @default(false)
@@ -38,6 +39,7 @@ model InformationOrder {
 model PDF {
   id               Int                @id @default(autoincrement())
   path             String
+  name             String
   createdAt        DateTime           @default(now())
   deleteAt         DateTime?
   InformationOrder InformationOrder[]
