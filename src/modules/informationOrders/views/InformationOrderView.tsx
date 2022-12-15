@@ -1,5 +1,8 @@
 import { userIsAdminAtom } from "@app/modules/shared/atoms";
-import { SimpleContainerView, Pagination } from "@app/modules/shared/components";
+import {
+  SimpleContainerView,
+  Pagination,
+} from "@app/modules/shared/components";
 import { Box, Button, Divider, IconButton, VStack } from "@chakra-ui/react";
 import { useAtom, useAtomValue } from "jotai";
 import Image from "next/image";
@@ -7,6 +10,7 @@ import { FC, useState } from "react";
 import { informationOrderDataAtom, informationOrderPageAtom } from "../atoms";
 import {
   ModalCompleteInfoOrder,
+  ModalCreateBulkInfoOrder,
   ModalCreateInfoOrder,
   TableInformationOrder,
 } from "../components";
@@ -28,6 +32,8 @@ export const InformationOrderView: FC = () => {
   const totalPages = informationOrdersPages?.pages[0]?.pages;
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
+
+  const [createBulkModalOpen, setCreateBulkModalOpen] = useState(false);
 
   const [completeModalOpen, setCompleteModalOpen] = useState(false);
 
@@ -62,9 +68,14 @@ export const InformationOrderView: FC = () => {
             />
           </IconButton>
           {!isAdmin && (
-            <Button ml="4" onClick={() => setCreateModalOpen(true)}>
-              + Agregar nuevo
-            </Button>
+            <>
+              <Button ml="4" onClick={() => setCreateBulkModalOpen(true)}>
+                + Agregar por lote
+              </Button>
+              <Button ml="4" onClick={() => setCreateModalOpen(true)}>
+                + Agregar nuevo
+              </Button>
+            </>
           )}
         </>
       }
@@ -94,10 +105,16 @@ export const InformationOrderView: FC = () => {
           isOpen={completeModalOpen}
         />
       ) : (
-        <ModalCreateInfoOrder
-          onClose={() => setCreateModalOpen(false)}
-          isOpen={createModalOpen}
-        />
+        <>
+          <ModalCreateInfoOrder
+            onClose={() => setCreateModalOpen(false)}
+            isOpen={createModalOpen}
+          />
+          <ModalCreateBulkInfoOrder
+            onClose={() => setCreateBulkModalOpen(false)}
+            isOpen={createBulkModalOpen}
+          />
+        </>
       )}
     </SimpleContainerView>
   );
