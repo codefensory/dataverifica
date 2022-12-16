@@ -72,7 +72,7 @@ export const ChooseFileInput: FC<ChooseFileInputProps> = (props) => {
           {name}
         </Text>
       </HStack>
-      <input {...getInputProps()} accept=".pdf" />
+      <input {...getInputProps()} accept={props.accept} />
     </>
   );
 };

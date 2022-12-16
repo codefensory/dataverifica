@@ -7,7 +7,13 @@ export const getInformationOrders = (page: number) =>
     .then((data) => data.data);
 
 export const createInformationOrders = (requestData: any) =>
-  axios.post("/api/information-orders", requestData).then((data) => data.data);
+  axios
+    .post("/api/information-orders", requestData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((data) => data.data);
 
 export const completeInformationOrder = (requestData: any) =>
   axios
