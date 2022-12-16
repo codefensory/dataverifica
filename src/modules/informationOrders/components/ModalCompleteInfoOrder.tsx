@@ -151,7 +151,7 @@ export const ModalCompleteInfoOrder: FC<ModalCompleteInfoOrderProps> = (
                 <FormLabel>Informacion requerida</FormLabel>
                 <Wrap>
                   {infoOrders?.requestInformation
-                    .split(";")
+                    ?.split(";")
                     .map((value, index) => (
                       <WrapItem key={index}>
                         <Tag>{value}</Tag>
@@ -167,6 +167,7 @@ export const ModalCompleteInfoOrder: FC<ModalCompleteInfoOrderProps> = (
                   rules={{ required: false }}
                   render={({ field }) => (
                     <ChooseFileInput
+                      accept=".pdf"
                       onChange={(files: any) => {
                         field.onChange(files[0]);
                       }}

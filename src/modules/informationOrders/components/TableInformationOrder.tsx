@@ -44,11 +44,11 @@ const UserBody = (props: {
             color="text.dark"
           >
             <Td pl="0" fontWeight="bold">
-              {info.personType}
+              {info.personType ?? "--"}
             </Td>
-            <Td fontWeight="bold">{info.documentType}</Td>
-            <Td>{info.documentNumber}</Td>
-            <Td>{info.name}</Td>
+            <Td fontWeight="bold">{info.documentType ?? "--"}</Td>
+            <Td>{info.documentNumber ?? "--"}</Td>
+            <Td>{info.name ?? "--"}</Td>
             <Td
               fontWeight="bold"
               color={info.isComplete ? "green" : "yellow.600"}
