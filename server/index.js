@@ -5,6 +5,8 @@ const app = next({ dev: process.env.NODE_ENV !== "production" });
 
 const handle = app.getRequestHandler();
 
+const port = process.env.PORT || 3000;
+
 global.app = app;
 
 function main() {
@@ -22,8 +24,8 @@ function main() {
     }
   });
 
-  server.listen(3000, () => {
-    console.log(`Server ready at http://localhost:${3000}`);
+  server.listen(port, () => {
+    console.log(`Server ready at http://localhost:${port}`);
   });
 }
 
