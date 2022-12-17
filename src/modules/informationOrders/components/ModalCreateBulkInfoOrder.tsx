@@ -2,7 +2,6 @@ import {
   Button,
   FormControl,
   FormLabel,
-  HStack,
   Input,
   Modal,
   ModalBody,
@@ -100,7 +99,7 @@ export const ModalCreateBulkInfoOrder: FC<ModalCreateBulkInfoOrderProps> = (
                 </span>
               </Text>
               <FormControl>
-                <FormLabel>Nombre de peticion</FormLabel>
+                <FormLabel>Nombre de petición</FormLabel>
                 <Input {...register("name")} />
               </FormControl>
               <FormControl>
@@ -121,7 +120,7 @@ export const ModalCreateBulkInfoOrder: FC<ModalCreateBulkInfoOrderProps> = (
               </FormControl>
               <FormControl>
                 <FormLabel>Observaciones generales</FormLabel>
-                <Textarea {...register("description")} />
+                <Textarea {...register("requestInformation")} />
               </FormControl>
             </VStack>
           </ModalBody>

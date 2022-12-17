@@ -53,6 +53,10 @@ export const ModalUpdateUser: FC<ModalUpdateUserProps> = (props) => {
 
     data.id = props.user?.id;
 
+    if (!!!data.password) {
+      data.password = undefined;
+    }
+
     if (data.password) {
       data.password = await sha256(data.password);
     }

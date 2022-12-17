@@ -14,6 +14,7 @@ import { userIsAdminAtom } from "../atoms";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { axios } from "../axios";
+import Image from "next/image";
 
 const headerStyle = (isActive: boolean): SystemStyleObject => ({
   position: "relative",
@@ -63,9 +64,7 @@ export const MainLayout: FC<PropsWithChildren> = (props) => {
     <Stack w="100vw" h="100vh" bg="primary.200" position="relative" spacing="0">
       <HStack w="full" h="3.5rem" bg="white" px="6" spacing="12">
         <Box>
-          <Heading color="text.dark" as="h2" size="md">
-            {isAdmin ? "Panel administrador" : "Panel cliente"}
-          </Heading>
+          <Image src="/logo.jpg" alt="logo" height={64} width={64} />
         </Box>
         <HStack flex="1" h="full">
           {isAdmin && (
