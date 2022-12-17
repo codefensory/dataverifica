@@ -11,6 +11,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Textarea,
   VStack,
 } from "@chakra-ui/react";
 import ReactSelect from "react-select";
@@ -21,7 +22,6 @@ import { toast } from "react-toastify";
 import { createInformationOrders } from "../services";
 import {
   documentTypeOptions,
-  informationOrdersOptions,
   informationsOrderKeys,
   personTypeOptions,
 } from "../utils";
@@ -32,9 +32,11 @@ type ModalCreateInfoOrderProps = {
 };
 
 export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
-  const { register, handleSubmit, reset, control } = useForm({
+  const { register, handleSubmit, reset, control, watch } = useForm({
     mode: "onBlur",
   });
+
+  const documentType = watch("documentType")?.value;
 
   const queryClient = useQueryClient();
 
@@ -44,10 +46,6 @@ export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
     data.documentType = data.documentType.value;
 
     data.personType = data.personType.value;
-
-    data.requestInformation = data.requestInformation
-      .map((values: any) => values.value)
-      .join(";");
 
     setIsCreating(true);
 
@@ -106,7 +104,7 @@ export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
                   />
                 </FormControl>
                 <FormControl>
-                  <FormLabel>Nombre</FormLabel>
+                  <FormLabel>Nombre o Razón social</FormLabel>
                   <Input
                     {...register("name")}
                     required
@@ -127,9 +125,17 @@ export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
                   />
                 </FormControl>
                 <FormControl>
-                  <FormLabel>Numero de documento</FormLabel>
+                  <FormLabel>Numero de DNI o RUC</FormLabel>
                   <Input
                     {...register("documentNumber")}
+                    onInput={(e: any) => {
+                      if (e.target.value.length > e.target.maxLength)
+                        e.target.value = e.target.value.slice(
+                          0,
+                          e.target.maxLength
+                        );
+                    }}
+                    maxLength={documentType === "DNI" ? 8 : 11}
                     required
                     type="number"
                     placeholder="12345678"
@@ -138,17 +144,11 @@ export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
               </HStack>
               <FormControl>
                 <FormLabel>Información a solicitar</FormLabel>
-                <Controller
-                  name="requestInformation"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <ReactSelect
-                      {...field}
-                      isMulti
-                      options={informationOrdersOptions}
-                    />
-                  )}
+                <Textarea
+                  isRequired
+                  maxLength={200}
+                  placeholder="Solo puede escribir 200 caracteres..."
+                  {...register("requestInformation")}
                 />
               </FormControl>
             </VStack>

@@ -71,6 +71,7 @@ router.get(async (req: NextApiRequest, res: NextApiResponse) => {
           },
         },
         PDF: true,
+        BulkFile: true,
       },
       skip: itemsByPage * page,
       take: itemsByPage,

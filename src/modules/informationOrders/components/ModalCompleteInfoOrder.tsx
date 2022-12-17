@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
 import {
+  Box,
   Button,
   Divider,
   FormControl,
@@ -13,11 +14,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Tag,
   Text,
   VStack,
-  Wrap,
-  WrapItem,
 } from "@chakra-ui/react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import { InformationOrderData } from "../domain";
@@ -26,6 +24,58 @@ import { completeInformationOrder, saveInformationOrder } from "../services";
 import { useQueryClient } from "@tanstack/react-query";
 import { informationsOrderKeys } from "../utils";
 import { toast } from "react-toastify";
+
+type InformationFormProps = {
+  infoOrders: InformationOrderData | undefined;
+};
+
+const SimpleInformationForm: FC<InformationFormProps> = (props) => {
+  const { infoOrders } = props;
+
+  return (
+    <>
+      <FormControl>
+        <FormLabel>Nombre o Razón social</FormLabel>
+        <Heading as="h2" size="md" color="text.dark">
+          {infoOrders?.name}
+        </Heading>
+      </FormControl>
+      {infoOrders?.BulkFile ? (
+        <FormControl>
+          <FormLabel>Archivo excel subido por el usuario</FormLabel>
+          <Box color="gray.700">
+            <a
+              href={infoOrders.BulkFile.path}
+              download={infoOrders.BulkFile.name}
+              style={{ textDecoration: "underline" }}
+            >
+              Descargar archivo ({infoOrders.BulkFile.name})
+            </a>
+          </Box>
+        </FormControl>
+      ) : (
+        <HStack spacing="6" w="full">
+          <FormControl>
+            <FormLabel>Tipo de persona</FormLabel>
+            <Text>{infoOrders?.personType}</Text>
+          </FormControl>
+          <FormControl>
+            <FormLabel>Documento</FormLabel>
+            <Text>
+              {infoOrders?.documentType} {infoOrders?.documentNumber}
+            </Text>
+          </FormControl>
+        </HStack>
+      )}
+      <FormControl>
+        <FormLabel>
+          {infoOrders?.BulkFile ? "Observaciones" : "Información requerida"}
+        </FormLabel>
+        <Text>{infoOrders?.requestInformation}</Text>
+      </FormControl>
+    </>
+  );
+};
 
 type ModalCompleteInfoOrderProps = {
   informationOrders?: InformationOrderData;
@@ -129,36 +179,7 @@ export const ModalCompleteInfoOrder: FC<ModalCompleteInfoOrderProps> = (
           <ModalCloseButton top="0.9rem" />
           <ModalBody maxH="100%" overflow="auto">
             <VStack spacing="6" w="full">
-              <FormControl>
-                <FormLabel>Nombre</FormLabel>
-                <Heading as="h2" size="md" color="text.dark">
-                  {infoOrders?.name}
-                </Heading>
-              </FormControl>
-              <HStack spacing="6" w="full">
-                <FormControl>
-                  <FormLabel>Tipo de persona</FormLabel>
-                  <Text>{infoOrders?.personType}</Text>
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Documento</FormLabel>
-                  <Text>
-                    {infoOrders?.documentType} {infoOrders?.documentNumber}
-                  </Text>
-                </FormControl>
-              </HStack>
-              <FormControl>
-                <FormLabel>Informacion requerida</FormLabel>
-                <Wrap>
-                  {infoOrders?.requestInformation
-                    ?.split(";")
-                    .map((value, index) => (
-                      <WrapItem key={index}>
-                        <Tag>{value}</Tag>
-                      </WrapItem>
-                    ))}
-                </Wrap>
-              </FormControl>
+              <SimpleInformationForm infoOrders={infoOrders} />
               <FormControl>
                 <FormLabel>Archivo PDF</FormLabel>
                 <Controller
@@ -179,7 +200,7 @@ export const ModalCompleteInfoOrder: FC<ModalCompleteInfoOrderProps> = (
               </FormControl>
               <Divider />
               <Heading as="h2" size="sm" color="text.dark" w="full">
-                Cliente solicitante
+                Información del solicitante
               </Heading>
               <HStack w="full">
                 <FormControl>
