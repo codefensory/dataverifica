@@ -1,4 +1,4 @@
-import { InformationOrder, PDF, User } from "@prisma/client";
+import { BulkFile, InformationOrder, PDF, User } from "@prisma/client";
 
 export type InformationOrderData = {
   User: {
@@ -7,7 +7,8 @@ export type InformationOrderData = {
     ruc: string;
     phone: string;
   };
-  PDF: PDF;
+  PDF?: PDF;
+  BulkFile?: BulkFile;
 } & InformationOrder;
 
 export type InformationOrderResponse = {

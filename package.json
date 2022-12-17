@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "nodemon -q --watch server/index.js",
     "build": "next build",
-    "start": "next start",
+    "start": "node server",
     "lint": "next lint"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "crypto-hash": "^2.0.1",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.4",
+    "express": "^4.18.2",
     "framer-motion": "7.6.7",
     "iron-session": "^6.3.1",
     "jotai": "1.10.0",
@@ -43,6 +44,7 @@
   "devDependencies": {
     "@chakra-ui/cli": "^2.1.8",
     "@types/bcrypt": "^5.0.0",
+    "nodemon": "^2.0.20",
     "prisma": "^4.6.1",
     "ts-node": "^10.9.1"
   }

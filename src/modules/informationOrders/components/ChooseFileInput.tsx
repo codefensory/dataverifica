@@ -61,10 +61,7 @@ export const ChooseFileInput: FC<ChooseFileInputProps> = (props) => {
           onClick={() => {
             if (canOpenPath) {
               window.open(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/${props.path?.replace(
-                  "public/",
-                  ""
-                )}`
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/${props.path}`
               );
             }
           }}
