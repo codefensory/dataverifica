@@ -58,7 +58,7 @@ export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
 
       props.onClose();
 
-      toast.success("Petición creada!!");
+      toast.success("¡Petición creada!");
 
       reset();
     } catch (error) {
@@ -105,11 +105,7 @@ export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
                 </FormControl>
                 <FormControl>
                   <FormLabel>Nombre o Razón social</FormLabel>
-                  <Input
-                    {...register("name")}
-                    required
-                    placeholder="First Name Last Name"
-                  />
+                  <Input {...register("name")} required placeholder="Nombres" />
                 </FormControl>
               </HStack>
               <HStack w="full" spacing="6">
@@ -143,7 +139,7 @@ export const ModalCreateInfoOrder: FC<ModalCreateInfoOrderProps> = (props) => {
                 </FormControl>
               </HStack>
               <FormControl>
-                <FormLabel>Información a solicitar</FormLabel>
+                <FormLabel>Observaciones</FormLabel>
                 <Textarea
                   isRequired
                   maxLength={200}

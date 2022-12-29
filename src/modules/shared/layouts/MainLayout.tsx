@@ -54,7 +54,7 @@ export const MainLayout: FC<PropsWithChildren> = (props) => {
 
       window.location.pathname = "/auth/signin";
     } catch (error) {
-      toast.error("Error al cerrar sesion");
+      toast.error("Error al cerrar sesión");
 
       throw error;
     }
@@ -103,7 +103,7 @@ export const MainLayout: FC<PropsWithChildren> = (props) => {
             rounded="full"
             onClick={handleSignout}
           >
-            Cerrar sesion
+            Cerrar sesión
           </Button>
         </Box>
       </HStack>

@@ -69,9 +69,9 @@ export const UserManagerView: FC<UserManagerViewProps> = (props) => {
 
       setIsDeleteModalOpen(false);
 
-      toast.success("Usuario eliminado!!");
+      toast.success("¡Usuario eliminado!");
     } catch (error) {
-      toast.error("Hubo un error al eleminar al usuario");
+      toast.error("Hubo un error al eliminar al usuario");
 
       throw error;
     } finally {
@@ -85,7 +85,7 @@ export const UserManagerView: FC<UserManagerViewProps> = (props) => {
       subTitle={
         isAdmin
           ? "Lista de todos los administradores"
-          : "Lista de todos los uuarios"
+          : "Lista de todos los usuarios"
       }
       rightRenderHeader={
         <>

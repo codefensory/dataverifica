@@ -49,7 +49,7 @@ export const InformationOrderView: FC = () => {
       title="Peticiones"
       subTitle={
         isAdmin
-          ? "Lista de todas las peticiones realizadas por lo usuarios"
+          ? "Lista de todas las peticiones realizadas por los usuarios"
           : "Lista de todas las peticiones que has solicitado"
       }
       rightRenderHeader={

@@ -50,7 +50,7 @@ export const ModalCreateUser: FC<ModalCreateUserProps> = (props) => {
 
       props.onClose();
 
-      toast.success("Usuario creado!!");
+      toast.success("¡Usuario creado!");
 
       reset();
     } catch (error) {
@@ -107,7 +107,7 @@ export const ModalCreateUser: FC<ModalCreateUserProps> = (props) => {
               </HStack>
               <HStack w="full" spacing="6">
                 <FormControl>
-                  <FormLabel>Telefono</FormLabel>
+                  <FormLabel>Teléfono</FormLabel>
                   <Input {...register("phone")} />
                 </FormControl>
                 <FormControl>

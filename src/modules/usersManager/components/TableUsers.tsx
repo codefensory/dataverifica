@@ -29,7 +29,7 @@ export const TableUser: FC<TableUserProps> = ({
     <TableContainer h="full" overflowY="auto" w="full">
       <Table variant="simple">
         <TableCaption hidden={isLoading || users.length > 0}>
-          Aun no hay usuarios
+          Aún no hay usuarios
         </TableCaption>
         <TableCaption hidden={!isLoading}>Cargando...</TableCaption>
         <Thead position="sticky" top="0" bg="white" zIndex="1">
@@ -38,7 +38,7 @@ export const TableUser: FC<TableUserProps> = ({
           </Th>
           <Th color="gray.500">Nombre</Th>
           <Th color="gray.500">RUC / DNI</Th>
-          <Th color="gray.500">Telefono</Th>
+          <Th color="gray.500">Teléfono</Th>
           <Th color="gray.500">Correo</Th>
           <Th color="gray.500">Actualizar</Th>
         </Thead>

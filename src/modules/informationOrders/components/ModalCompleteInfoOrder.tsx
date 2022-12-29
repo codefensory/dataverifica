@@ -112,7 +112,7 @@ export const ModalCompleteInfoOrder: FC<ModalCompleteInfoOrderProps> = (
 
       props.onClose();
 
-      toast.success("Peticion completada!!");
+      toast.success("¡Petición completada!");
 
       reset();
     } catch (error) {
@@ -136,7 +136,7 @@ export const ModalCompleteInfoOrder: FC<ModalCompleteInfoOrderProps> = (
 
       props.onClose();
 
-      toast.success("Peticion completada!!");
+      toast.success("¡Petición completada!");
 
       reset();
     } catch (error) {

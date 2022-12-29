@@ -50,7 +50,7 @@ export const ModalCreateBulkInfoOrder: FC<ModalCreateBulkInfoOrderProps> = (
 
       props.onClose();
 
-      toast.success("Petición creada!!");
+      toast.success("¡Petición creada!");
 
       reset();
     } catch (error) {
@@ -89,14 +89,7 @@ export const ModalCreateBulkInfoOrder: FC<ModalCreateBulkInfoOrderProps> = (
             <VStack w="full" spacing="6">
               <Text color="text.dark">
                 En este modal puedes subir un archivo excel con las personas que
-                quieres solicitar, puedes usar la plantilla de personas{" "}
-                <span style={{ textDecoration: "underline", color: "blue" }}>
-                  naturales
-                </span>
-                , o{" "}
-                <span style={{ textDecoration: "underline", color: "blue" }}>
-                  jurídicas
-                </span>
+                quieres solicitar
               </Text>
               <FormControl>
                 <FormLabel>Nombre de petición</FormLabel>

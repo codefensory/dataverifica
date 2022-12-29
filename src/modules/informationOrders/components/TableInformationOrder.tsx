@@ -174,7 +174,7 @@ export const TableInformationOrder: FC<TableInformationOrderProps> = ({
     <TableContainer h="full" overflowY="auto" w="full">
       <Table variant="simple">
         <TableCaption hidden={isLoading || informationOrders.length > 0}>
-          Aun no hay peticiones
+          Aún no hay peticiones
         </TableCaption>
         <TableCaption hidden={!isLoading}>Cargando...</TableCaption>
         <Thead position="sticky" top="0" bg="white" zIndex="1">

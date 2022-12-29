@@ -1,11 +1,7 @@
 import { FC } from "react";
 import {
   Button,
-  Divider,
-  FormControl,
-  FormLabel,
   Heading,
-  HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,11 +9,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Tag,
-  Text,
-  VStack,
-  Wrap,
-  WrapItem,
 } from "@chakra-ui/react";
 
 type ModalDeleteInfoOrderProps = {
@@ -36,7 +27,7 @@ export const ModalDeleteUser: FC<ModalDeleteInfoOrderProps> = (props) => {
         <ModalCloseButton top="0.9rem" />
         <ModalBody maxH="100%" overflow="auto">
           <Heading as="h2" size="sm" color="text.dark">
-            Esta seguro que deseas eliminar este usuario?
+            ¿Estás seguro de que deseas eliminar este usuario?
           </Heading>
         </ModalBody>
         <ModalFooter>

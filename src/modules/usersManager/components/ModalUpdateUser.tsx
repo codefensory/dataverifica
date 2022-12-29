@@ -30,7 +30,7 @@ type ModalUpdateUserProps = {
 };
 
 export const ModalUpdateUser: FC<ModalUpdateUserProps> = (props) => {
-  const { register, handleSubmit, reset, setValue } = useForm({
+  const { register, handleSubmit, setValue } = useForm({
     mode: "onBlur",
   });
 
@@ -70,7 +70,7 @@ export const ModalUpdateUser: FC<ModalUpdateUserProps> = (props) => {
 
       props.onClose();
 
-      toast.success("Usuario actualizado!!");
+      toast.success("¡Usuario actualizado!");
     } catch (error) {
       toast.error("Hubo un error al actualizar al usuario");
 
@@ -121,7 +121,7 @@ export const ModalUpdateUser: FC<ModalUpdateUserProps> = (props) => {
               </HStack>
               <HStack w="full" spacing="6">
                 <FormControl>
-                  <FormLabel>Telefono</FormLabel>
+                  <FormLabel>Teléfono</FormLabel>
                   <Input {...register("phone")} />
                 </FormControl>
                 <FormControl>

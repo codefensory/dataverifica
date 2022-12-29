@@ -4,6 +4,7 @@ import {
   Divider,
   FormControl,
   Heading,
+  HStack,
   Input,
   Stack,
   Text,
@@ -11,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { sha256 } from "crypto-hash";
+import Image from "next/image";
 import { FC, FormEvent, useState } from "react";
 import { toast } from "react-toastify";
 import { useRedirectByUser } from "../hooks";
@@ -48,7 +50,7 @@ export const SigninPage: FC = () => {
       setPassword("");
 
       toast.error(
-        error?.response?.data?.error ?? "Hubo un error al iniciar sesion"
+        error?.response?.data?.error ?? "Hubo un error al iniciar sesión"
       );
     }
 
@@ -66,21 +68,28 @@ export const SigninPage: FC = () => {
         m="auto"
         w="30rem"
         bg="white"
+        border="2px solid"
+        borderColor="gray.500"
         borderRadius="12"
         p="6"
         shadow="lg"
       >
-        <VStack alignItems="start-flex" spacing="1">
-          <Heading as="h4" size="md" color="text.dark">
-            Bienvenido
-          </Heading>
-          <Text color="gray.500">Ingresa tus credenciales para acceder</Text>
-        </VStack>
+        <HStack w="full" justifyContent="space-between">
+          <VStack alignItems="start-flex" spacing="1">
+            <Heading as="h4" size="md" color="text.dark">
+              Bienvenido
+            </Heading>
+            <Text color="gray.500">Ingresa tus credenciales para acceder</Text>
+          </VStack>
+          <Image src="/logo.jpg" alt="logo" height={76} width={76} />
+        </HStack>
         <Divider my="4" />
         <form onSubmit={onSubmit}>
           <VStack spacing="4">
             <FormControl>
               <Input
+                border="1px solid"
+                borderColor="gray.500"
                 type="text"
                 placeholder="Nombre de usuario"
                 value={username}
@@ -89,6 +98,8 @@ export const SigninPage: FC = () => {
             </FormControl>
             <FormControl>
               <Input
+                border="1px solid"
+                borderColor="gray.500"
                 type="password"
                 placeholder="Contraseña"
                 value={password}
