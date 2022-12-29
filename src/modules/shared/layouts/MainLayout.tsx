@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { axios } from "../axios";
 import Image from "next/image";
-import { Head } from "next/document";
+import Head from "next/head";
 
 const headerStyle = (isActive: boolean): SystemStyleObject => ({
   position: "relative",

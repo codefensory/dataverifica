@@ -1,5 +1,5 @@
 import { SigninPage } from "@app/modules/auth/views";
-import { Head } from "next/document";
+import Head from "next/head";
 
 export default function Signin() {
   return (
