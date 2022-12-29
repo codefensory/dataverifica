@@ -10,7 +10,7 @@ const router = createRouter<NextApiRequest, NextApiResponse>();
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: "./static/pdf",
+    destination: "./files/pdf",
     filename: function (_req, file, cb) {
       const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
 

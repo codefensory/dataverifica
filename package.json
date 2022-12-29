@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon -q --watch server/index.js",
     "build": "next build",
-    "start": "node server",
+    "start": "NODE_ENV=production node server",
     "lint": "next lint"
   },
   "dependencies": {

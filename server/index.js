@@ -1,4 +1,7 @@
+const path = require("path");
+
 const express = require("express");
+
 const next = require("next");
 
 const app = next({ dev: process.env.NODE_ENV !== "production" });
@@ -12,7 +15,7 @@ global.app = app;
 function main() {
   const server = express();
 
-  server.use(express.static(__dirname + "/static"));
+  server.use("/files", express.static(path.join(__dirname, "../files")));
 
   server.all("*", (req, res) => {
     return handle(req, res);
