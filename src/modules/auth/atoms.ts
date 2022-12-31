@@ -9,7 +9,12 @@ export const [, userInfoAtom] = atomsWithQuery((get) => ({
   queryFn: () =>
     isServer
       ? null
-      : axios.get<UserResponseAuth>("/api/user").then((data) => data.data),
-  refetchOnMount: false,
-  refetchOnWindowFocus: false,
+      : axios
+          .get<UserResponseAuth>("/api/user")
+          .then((data) => data.data)
+          .catch(async () => {
+            await axios.post("/api/auth/signout");
+
+            window.location.pathname = "/auth/signin";
+          }),
 }));

@@ -10,10 +10,6 @@ const router = createRouter<NextApiRequest, NextApiResponse>();
 router.use(ironMiddleware(authSessionOption));
 
 router.post(async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") {
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
-
   const { username, password: passwordHash } = req.body;
 
   if (!username || !passwordHash) {

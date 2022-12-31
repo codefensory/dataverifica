@@ -31,7 +31,7 @@ router.get(async (req, res) => {
   const itemsByPage = 10;
 
   const usersResponse = await prisma.user.findMany({
-    where: { isAdmin: false },
+    where: { isAdmin: false, deleteAt: null },
     select: {
       id: true,
       companyName: true,
@@ -45,7 +45,7 @@ router.get(async (req, res) => {
   });
 
   const totalPages = await prisma.user.count({
-    where: { isAdmin: false },
+    where: { isAdmin: false, deleteAt: null },
   });
 
   res
@@ -127,8 +127,13 @@ router.delete(async (req, res) => {
     });
   }
 
+  const nowDate = new Date();
+
   try {
-    const order = await prisma.user.delete({
+    const order = await prisma.user.update({
+      data: {
+        deleteAt: nowDate,
+      },
       where: {
         id,
       },

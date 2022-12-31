@@ -20,7 +20,9 @@ router.get(async (req, res) => {
     return;
   }
 
-  const userResponse = await prisma.user.findFirst({ where: { id: user.id } });
+  const userResponse = await prisma.user.findFirst({
+    where: { id: user.id, deleteAt: null },
+  });
 
   if (!userResponse) {
     res.status(400).json({

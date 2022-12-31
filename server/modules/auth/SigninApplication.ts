@@ -15,7 +15,7 @@ export type SigninApplicationReturn = {
 export class SigninApplication {
   async execute(dto: SigninApplicationDTO): Promise<User | null | undefined> {
     const user = await prisma.user.findFirst({
-      where: { username: dto.username },
+      where: { username: dto.username, deleteAt: null },
     });
 
     if (!user) {
